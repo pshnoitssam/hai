@@ -866,13 +866,6 @@ function drawFaceMap(el, s, {interactive=false, previous=null, hub=true}={}){
     g += `<text class="lbl" x="48" y="${y}" dominant-baseline="middle">${row[0]} <tspan class="lbl-mute">· ${area.short}</tspan>${scoreBit}</text>`;
   });
 
-  if(hub){
-    const vals = Object.values(s).filter(Boolean);
-    const avg = vals.length ? (vals.reduce((x,y)=>x+y,0)/vals.length).toFixed(1) : "–";
-    g += `<text class="avg" x="48" y="430" text-anchor="start">${avg}</text>`;
-    g += `<text class="avgsub" x="48" y="450" text-anchor="start">average</text>`;
-  }
-
   // face (scores are in the key, not floating on features)
   g += `<g transform="translate(155 0) translate(260 310) scale(1.28) translate(-260 -310)">`;
 
