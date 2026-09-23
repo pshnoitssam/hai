@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bloomwheel — a Wheel of Life check-in for women</title>
+<meta name="description" content="Rate nine areas of your life, see your wheel, and get a small, practical plan for the areas you want to grow.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FDF0F5; --surface:#FFFFFF; --ink:#3A1F33; --muted:#7D5A70; --line:#F3D3E1;
+  --accent:#D6457F; --accent-ink:#FFFFFF; --soft:#FBE1EC;
+  --serif:"Young Serif", Georgia, "Times New Roman", serif;
+  --sans:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1F1219; --surface:#2B1A25; --ink:#FBEAF2; --muted:#C9A3B8; --line:#4A2D3E;
+    --accent:#FF8DB9; --accent-ink:#1F1219; --soft:#3B2131;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1F1219; --surface:#2B1A25; --ink:#FBEAF2; --muted:#C9A3B8; --line:#4A2D3E;
+  --accent:#FF8DB9; --accent-ink:#1F1219; --soft:#3B2131;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.3rem;background:none;border:0;cursor:pointer;padding:0}
+.brand svg{width:28px;height:28px}
+.steps{display:flex;gap:6px;list-style:none;margin:0;padding:0;font-size:.85rem;color:var(--muted)}
+.steps li{padding:4px 10px;border-radius:999px}
+.steps li.on{background:var(--soft);color:var(--ink);font-weight:600}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.15;margin:0}
+h1{font-size:clamp(2.5rem,6vw,4.4rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.8rem,3.6vw,2.6rem)}
+h3{font-size:1.25rem}
+p{margin:0}
+.lede{font-size:1.15rem;color:var(--muted);max-width:34em;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:14px 26px;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-ink);transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:28px}
+.note{font-size:.9rem;color:var(--muted)}
+
+/* intro */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;padding:30px 0 60px}
+.hero .wheel{max-width:480px;justify-self:center;width:100%}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;padding:40px 0 70px;border-top:1px solid var(--line)}
+.how h3{margin-bottom:8px}
+.how p{color:var(--muted)}
+.how .n{font-family:var(--serif);font-size:2rem;color:var(--accent);display:block;margin-bottom:6px}
+.last{margin-top:22px;padding:14px 18px;background:var(--soft);border-radius:14px;font-size:.95rem;max-width:34em}
+
+/* wheel */
+.wheel svg{display:block;width:100%;height:auto;overflow:visible}
+.wheel .ring{fill:none;stroke:var(--line);stroke-width:1}
+.wheel .spoke{stroke:var(--line);stroke-width:1}
+.wheel .fillw{transition:d .35s ease}
+.wheel .prev{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 4;opacity:.55}
+.wheel .hit{fill:transparent;cursor:pointer}
+.wheel .hit:hover{fill:var(--ink);fill-opacity:.08}
+.wheel .lbl{font-family:var(--sans);font-size:14px;font-weight:600;fill:var(--ink)}
+.wheel .lblscore{font-size:13px;font-weight:500;fill:var(--muted)}
+.wheel .hub{fill:var(--surface);stroke:var(--line)}
+.wheel .hubtxt{font-family:var(--serif);font-size:26px;fill:var(--ink)}
+.wheel .hubsub{font-size:11px;fill:var(--muted)}
+
+/* rate */
+.rate{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px;padding:10px 0 80px;align-items:start}
+.rate .stick{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}
+.rate .stick p{color:var(--muted);margin-top:10px}
+.rows{display:flex;flex-direction:column;gap:14px}
+.row{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.row .head{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.dot{width:14px;height:14px;border-radius:50%;flex:none;margin-top:6px}
+.row h3{font-size:1.1rem}
+.row .q{color:var(--muted);font-size:.95rem;margin-top:2px}
+.scale{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.scale button{border:1px solid var(--line);background:transparent;border-radius:8px;padding:8px 0;cursor:pointer;font-size:.9rem;font-variant-numeric:tabular-nums}
+.scale button:hover{border-color:var(--ink)}
+.scale button[aria-checked="true"]{background:var(--c);border-color:var(--c);color:#fff;font-weight:700}
+.scale-ends{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:6px}
+.progress{margin-top:22px;font-size:.95rem;color:var(--muted)}
+
+/* focus */
+.focus{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;padding:10px 0 80px;align-items:start}
+.summary{margin-top:16px;color:var(--muted);font-size:1.05rem}
+.summary strong{color:var(--ink);font-weight:600}
+.pick{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.pick label{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;cursor:pointer}
+.pick label:has(input:checked){border-color:var(--accent);background:var(--soft)}
+.pick input{width:20px;height:20px;accent-color:var(--accent);flex:none}
+.pick .nm{flex:1;font-weight:600}
+.pick .sc{font-variant-numeric:tabular-nums;color:var(--muted)}
+.delta{font-size:.8rem;margin-left:6px}
+.delta.up{color:#3F9C80}.delta.down{color:#D6457F}
+.legend{display:flex;gap:16px;font-size:.85rem;color:var(--muted);margin-top:10px;justify-content:center}
+.legend span::before{content:"";display:inline-block;width:18px;height:0;border-top:1.5px dashed var(--ink);opacity:.6;vertical-align:middle;margin-right:6px}
+
+/* plan */
+.plan{padding:10px 0 80px;max-width:760px}
+.plan > p{margin-top:12px}
+.area{margin-top:40px;background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.area .band{height:8px;background:var(--c)}
+.area .inner{padding:26px 28px 28px}
+.area .ttl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.area .ttl .s{font-family:var(--serif);font-size:1.6rem;color:var(--c)}
+.area .ttl .s small{font-size:.9rem;color:var(--muted);font-family:var(--sans)}
+.area h4{font-size:.95rem;font-weight:700;margin:24px 0 10px}
+.area ul{margin:0;padding-left:1.2em}
+.area li{margin:6px 0}
+.area ul.do{list-style:none;padding:0}
+.area ul.do li{display:flex;gap:10px;align-items:flex-start}
+.area ul.do input{margin-top:5px;width:18px;height:18px;accent-color:var(--c);flex:none}
+.area ul.do input:checked + span{text-decoration:line-through;color:var(--muted)}
+.deeper{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.deeper div{background:var(--soft);border-radius:14px;padding:14px 16px;font-size:.95rem}
+.deeper b{display:block;margin-bottom:4px}
+.deeper em{font-style:normal;color:var(--muted)}
+.working{margin-top:40px;padding:22px 26px;border-radius:22px;border:1.5px dashed var(--line)}
+.working p{color:var(--muted);margin-top:6px}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.85rem;color:var(--muted)}
+footer p{max-width:46em}
+
+[hidden]{display:none!important}
+@media (max-width:820px){
+  .hero,.rate,.focus{grid-template-columns:1fr;gap:28px}
+  .hero .wheel{max-width:380px;order:-1}
+  .rate .stick{position:static}
+  .rate .stick .wheel{max-width:340px;margin:0 auto}
+  .how{grid-template-columns:1fr;gap:22px}
+  .deeper{grid-template-columns:1fr}
+  .steps{display:none}
+  .area .inner{padding:22px 20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <button class="brand" id="home" aria-label="Bloomwheel, back to start">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16 L16 4 A12 12 0 0 1 26.4 10 Z" fill="#F4A3BE"/><path d="M16 16 L26.4 10 A12 12 0 0 1 24 25 Z" fill="#B86BC9"/><path d="M16 16 L24 25 A12 12 0 0 1 9 25.6 Z" fill="#E0457B"/></svg>
+      Bloomwheel
+    </button>
+    <ol class="steps" id="steps" hidden>
+      <li data-s="rate">Rate</li><li data-s="focus">Choose</li><li data-s="plan">Plan</li>
+    </ol>
+  </header>
+
+  <!-- INTRO -->
+  <main id="v-intro">
+    <section class="hero">
+      <div>
+        <h1>How's your life, really?</h1>
+        <p class="lede">Rate nine parts of your life from 1 to 10. See where you feel full and where you're running low, then get a short, practical plan for the areas you want to work on. It takes about five minutes.</p>
+        <div class="actions">
+          <button class="btn" id="start">Start my check-in</button>
+          <span class="note">Private. Your answers stay in your browser.</span>
+        </div>
+        <div class="last" id="last" hidden></div>
+      </div>
+      <div class="wheel" id="heroWheel" aria-hidden="true"></div>
+    </section>
+    <section class="how">
+      <div><span class="n">1</span><h3>Rate each area</h3><p>Work, money, health, friends, love and more. Go with your gut — there are no right answers.</p></div>
+      <div><span class="n">2</span><h3>See the shape</h3><p>Your answers form a wheel. A bumpy wheel shows where life feels lopsided right now.</p></div>
+      <div><span class="n">3</span><h3>Pick what matters</h3><p>Choose up to three areas. You'll get questions to reflect on, small steps for this week and resources to go deeper.</p></div>
+    </section>
+  </main>
+
+  <!-- RATE -->
+  <main id="v-rate" hidden>
+    <section class="rate">
+      <div class="stick">
+        <h2>Right now, how full is each part of your life?</h2>
+        <p>1 means empty, 10 means you wouldn't change a thing. Tap a number, or tap the wheel.</p>
+        <div class="wheel" id="rateWheel" style="margin-top:20px"></div>
+      </div>
+      <div>
+        <div class="rows" id="rows"></div>
+        <p class="progress" id="progress"></p>
+        <div class="actions"><button class="btn" id="toFocus" disabled>See my wheel</button></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOCUS -->
+  <main id="v-focus" hidden>
+    <section class="focus">
+      <div>
+        <div class="wheel" id="focusWheel"></div>
+        <div class="legend" id="legend" hidden><span>Your last check-in</span></div>
+      </div>
+      <div>
+        <h2>Here's your wheel</h2>
+        <p class="summary" id="summary"></p>
+        <p style="margin-top:26px;font-weight:600">Which areas do you want to work on? Pick up to three.</p>
+        <div class="pick" id="pick"></div>
+        <div class="actions">
+          <button class="btn" id="toPlan">Build my plan</button>
+          <button class="btn ghost" id="backRate">Change my ratings</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PLAN -->
+  <main id="v-plan" hidden>
+    <section class="plan">
+      <h2>Your plan</h2>
+      <p class="lede">Start small. Pick one thing from each area to try this week, and come back in a month to see how your wheel has changed.</p>
+      <div id="planBody"></div>
+      <div class="actions">
+        <button class="btn" id="save">Save this check-in</button>
+        <button class="btn ghost" id="print">Print my plan</button>
+        <button class="btn ghost" id="again">Start a new check-in</button>
+      </div>
+      <p class="note" id="saveNote" style="margin-top:12px"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Bloomwheel is a reflection tool, not therapy or medical advice. If you're struggling, a licensed therapist can help. If you're in crisis in the US, call or text 988 to reach the Suicide &amp; Crisis Lifeline.</p>
+  </footer>
+</div>
+
+<script>
+const AREAS = [
+  {id:"career", short:"Work", name:"Work & career", color:"#9A72D9",
+   q:"How fulfilled are you by the work you do?",
+   reflect:["What parts of your week give you energy, and which drain it?","If money weren't a factor, what would you change first about your work?","What would a 10 look like here, in one sentence?"],
+   low:["Write down the three tasks that drain you most. Pick one to delegate, drop or batch.","Have one coffee chat with someone in a role you're curious about.","Update one section of your CV or LinkedIn — just one."],
+   mid:["Ask your manager or a mentor what would get you to the next level.","Block one hour a week for a skill you want to grow.","Keep a wins list for a month so you can see your own progress."],
+   book:["Designing Your Life","Bill Burnett & Dave Evans","Design-thinking exercises for finding work that fits."],
+   support:["A career coach or mentor","Someone already doing the work you want to move toward."]},
+  {id:"money", short:"Money", name:"Money", color:"#4FAE93",
+   q:"How secure and in control do you feel financially?",
+   reflect:["What feeling comes up when you check your bank balance?","Which money habit from growing up do you want to keep, and which do you want to drop?","What would feeling financially safe actually look like for you?"],
+   low:["Look at the last 30 days of spending without judgment. Just notice.","Set up an automatic transfer to savings, even a small one.","List every bill and debt in one place so nothing is hidden."],
+   mid:["Pick one savings goal and give it a name and a date.","Check your retirement contributions once this month.","Cancel one subscription you forgot you had."],
+   book:["Get Good with Money","Tiffany Aliche","A clear, step-by-step path to financial security."],
+   support:["A fee-only financial planner","Or a nonprofit credit counseling service if debt feels heavy."]},
+  {id:"health", short:"Health", name:"Body & health", color:"#EE7F86",
+   q:"How well are you looking after your body — sleep, movement, food?",
+   reflect:["How does your body feel at the end of a typical day?","What gets in the way of sleep, movement or eating well?","When did you last feel really good physically? What was different?"],
+   low:["Aim for the same bedtime every night this week.","Take a 20-minute walk three times this week.","Book the check-up you've been putting off."],
+   mid:["Try one new kind of movement — a class, a swim, a hike.","Add a vegetable to one meal a day.","Keep a water bottle where you can see it."],
+   book:["Burnout","Emily & Amelia Nagoski","Why stress lives in the body, and how to release it."],
+   support:["Your primary care doctor","A yearly check-up gives you a baseline to build on."]},
+  {id:"mind", short:"Mind", name:"Mind & emotions", color:"#B86BC9",
+   q:"How are you doing emotionally, most days?",
+   reflect:["What emotion have you felt most often this month?","What's been taking up the most space in your head?","Who or what helps you feel calm?"],
+   low:["Write for five minutes each morning — whatever comes out.","Tell one person you trust how you're really doing.","Look into talking to a therapist or counselor."],
+   mid:["Notice one thought that keeps repeating, and write it down when it shows up.","Try a short guided meditation three times this week.","Plan something to look forward to."],
+   book:["Self-Compassion","Kristin Neff","How to treat yourself the way you'd treat a close friend."],
+   support:["A licensed therapist","Many offer sliding-scale fees. Directories let you filter by specialty."]},
+  {id:"friends", short:"Friends", name:"Friends & social life", color:"#EE9A5C",
+   q:"How connected do you feel to friends and community?",
+   reflect:["Who do you feel most like yourself around?","Which friendships have faded that you miss?","What kind of social life would feel right — not just busy?"],
+   low:["Message one person you've lost touch with. Just say you thought of them.","Join one recurring activity: a club, class or volunteer shift.","Say yes to the next invitation you get."],
+   mid:["Turn a casual friend into a closer one: suggest a one-on-one plan.","Start a small ritual — a monthly dinner, a walk, a book swap.","Host something low-key."],
+   book:["Platonic","Marisa G. Franco","The science of making and keeping friends as an adult."],
+   support:["Local clubs and meetups","Run clubs, book clubs, classes, volunteering."]},
+  {id:"love", short:"Love", name:"Love & romance", color:"#E0457B",
+   q:"How happy are you with your love life, single or partnered?",
+   reflect:["What do you need from a partner that you haven't asked for?","What patterns do you notice in your past relationships?","What does love look like when it's good for you?"],
+   low:["Write down your non-negotiables and your nice-to-haves.","Spend one evening doing something just for you.","If you're partnered, ask one question you've been avoiding."],
+   mid:["Plan a date — with a partner, or with yourself.","Share one appreciation a day for a week.","Name what you're longing for, out loud or on paper."],
+   book:["Attached","Amir Levine & Rachel Heller","Understand your attachment style and what you need in love."],
+   support:["A therapist","Individually to untangle patterns, or together as a couple."]},
+  {id:"family", short:"Family", name:"Family", color:"#C77A9E",
+   q:"How do you feel about your relationships with family?",
+   reflect:["Which family relationship takes the most energy?","What boundary would make things easier?","Who in your family, given or chosen, do you want to be closer to?"],
+   low:["Write the boundary you need in one sentence, before you ever say it.","Give one draining conversation a set end time.","Lean on your chosen family this week."],
+   mid:["Schedule a regular call with one family member.","Ask an older relative a question about their life.","Plan one shared activity that isn't about obligation."],
+   book:["Set Boundaries, Find Peace","Nedra Glover Tawwab","A practical guide to saying what you need."],
+   support:["A family therapist","Or a support group for your specific situation."]},
+  {id:"growth", short:"Growth", name:"Growth & purpose", color:"#6A9FD6",
+   q:"How much are you learning and doing things that feel like you?",
+   reflect:["What did you love doing before life got busy?","What would you try if you weren't worried about being bad at it?","Who do you want to become in the next year?"],
+   low:["Write a list of ten things you're curious about.","Spend 30 minutes this week learning something just for you.","Unfollow accounts that make you feel behind."],
+   mid:["Sign up for a class or workshop.","Set one goal for the year and choose this month's step.","Find a mentor — or become one."],
+   book:["The Artist's Way","Julia Cameron","A 12-week course for reconnecting with your creativity."],
+   support:["Classes near you","Community colleges, libraries and local studios."]},
+  {id:"fun", short:"Fun & rest", name:"Fun & rest", color:"#D9A93A",
+   q:"How much time do you have for play, rest and things you enjoy?",
+   reflect:["When did you last lose track of time in a good way?","What kind of rest actually restores you?","What would you do with a free Saturday, no guilt?"],
+   low:["Put one hour of doing nothing in your calendar, and protect it.","Pick one small pleasure and do it every day this week.","Say no to one thing that isn't necessary."],
+   mid:["Plan a mini adventure — a day trip or a new neighborhood.","Revisit a hobby you loved as a kid.","Take a real lunch break, away from screens."],
+   book:["The Power of Fun","Catherine Price","Why fun matters, and how to make room for more of it."],
+   support:["A standing plan","A weekly slot for something you enjoy, shared with a friend."]}
+];
+const byId = Object.fromEntries(AREAS.map(a=>[a.id,a]));
+const KEY = "bloomwheel.checkins";
+let scores = {}, focus = [], saved = false;
+
+/* storage */
+function loadAll(){ try{ return JSON.parse(localStorage.getItem(KEY)) || []; }catch(e){ return []; } }
+function saveAll(list){ try{ localStorage.setItem(KEY, JSON.stringify(list)); return true; }catch(e){ return false; } }
+const prev = () => { const l = loadAll(); return l.length ? l[l.length-1] : null; };
+
+/* wheel */
+const CX=260, CY=260, R0=34, R=180, N=AREAS.length, STEP=360/N;
+const rk = k => R0 + k*(R-R0)/10;
+const rad = d => d*Math.PI/180;
+const pt = (r,a) => [CX + r*Math.cos(rad(a)), CY + r*Math.sin(rad(a))];
+function sector(r0,r1,a0,a1){
+  const [x1,y1]=pt(r1,a0),[x2,y2]=pt(r1,a1),[x3,y3]=pt(r0,a1),[x4,y4]=pt(r0,a0);
+  return `M${x1.toFixed(2)} ${y1.toFixed(2)}A${r1} ${r1} 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)}L${x3.toFixed(2)} ${y3.toFixed(2)}A${r0} ${r0} 0 0 0 ${x4.toFixed(2)} ${y4.toFixed(2)}Z`;
+}
+function drawWheel(el, s, {interactive=false, previous=null, hub=true}={}){
+  let g = "";
+  for(let k=1;k<=10;k++) g += `<circle class="ring" cx="${CX}" cy="${CY}" r="${rk(k)}"/>`;
+  AREAS.forEach((a,i)=>{
+    const a0 = -90 + i*STEP;
+    const [x,y] = pt(R, a0); const [xi,yi] = pt(R0, a0);
+    g += `<line class="spoke" x1="${xi}" y1="${yi}" x2="${x}" y2="${y}"/>`;
+    if(s[a.id]) g += `<path class="fillw" fill="${a.color}" fill-opacity=".88" d="${sector(R0, rk(s[a.id]), a0+1, a0+STEP-1)}"/>`;
+    if(previous && previous[a.id]) g += `<path class="prev" d="${sector(R0, rk(previous[a.id]), a0+1, a0+STEP-1)}"/>`;
+    if(interactive){
+      for(let k=1;k<=10;k++) g += `<path class="hit" data-a="${a.id}" data-k="${k}" d="${sector(rk(k-1), rk(k), a0, a0+STEP)}"><title>${a.name}: ${k}</title></path>`;
+    }
+    const mid = a0 + STEP/2; const [lx,ly] = pt(R+34, mid);
+    const c = Math.cos(rad(mid)); const anchor = Math.abs(c)<.25 ? "middle" : (c>0 ? "start" : "end");
+    g += `<text class="lbl" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="middle">${a.short}${s[a.id] ? ` <tspan class="lblscore">${s[a.id]}</tspan>` : ""}</text>`;
+  });
+  if(hub){
+    const vals = Object.values(s).filter(Boolean);
+    const avg = vals.length ? (vals.reduce((x,y)=>x+y,0)/vals.length).toFixed(1) : "–";
+    g += `<circle class="hub" cx="${CX}" cy="${CY}" r="${R0}"/><text class="hubtxt" x="${CX}" y="${CY+4}" text-anchor="middle">${avg}</text><text class="hubsub" x="${CX}" y="${CY+20}" text-anchor="middle">average</text>`;
+  }
+  el.innerHTML = `<svg viewBox="0 0 520 520" role="img" aria-label="Life wheel">${g}</svg>`;
+  if(interactive){
+    el.querySelectorAll(".hit").forEach(h=>h.addEventListener("click",()=>setScore(h.dataset.a, +h.dataset.k)));
+  }
+}
+
+/* views */
+function show(v){
+  ["intro","rate","focus","plan"].forEach(x=>document.getElementById("v-"+x).hidden = x!==v);
+  const st = document.getElementById("steps"); st.hidden = v==="intro";
+  st.querySelectorAll("li").forEach(li=>li.classList.toggle("on", li.dataset.s===v));
+  window.scrollTo({top:0});
+}
+
+function renderIntro(){
+  // hero sample wheel, fills once on load
+  const sample = {career:6,money:5,health:7,mind:4,friends:8,love:5,family:7,growth:3,fun:6};
+  const el = document.getElementById("heroWheel");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce){ drawWheel(el, sample, {hub:false}); }
+  else{
+    let t=0; const tick=()=>{ t=Math.min(1,t+0.04); const e=1-Math.pow(1-t,3);
+      const s={}; for(const k in sample) s[k]=Math.max(1,Math.round(sample[k]*e));
+      drawWheel(el, s, {hub:false}); if(t<1) requestAnimationFrame(tick); };
+    drawWheel(el, {}, {hub:false}); setTimeout(()=>requestAnimationFrame(tick), 250);
+  }
+  const p = prev(); const box = document.getElementById("last");
+  if(p){
+    const vals = Object.values(p.scores); const avg = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1);
+    const d = new Date(p.date).toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"});
+    box.textContent = `Your last check-in was on ${d}, with an average of ${avg}. Your new wheel will show how things have changed.`;
+    box.hidden = false;
+  }
+}
+
+function renderRows(){
+  const rows = document.getElementById("rows");
+  rows.innerHTML = AREAS.map(a=>`
+    <div class="row" style="--c:${a.color}">
+      <div class="head"><span class="dot" style="background:${a.color}"></span>
+        <div><h3>${a.name}</h3><p class="q">${a.q}</p></div></div>
+      <div class="scale" role="radiogroup" aria-label="${a.name}">
+        ${Array.from({length:10},(_,i)=>`<button role="radio" aria-checked="${scores[a.id]===i+1}" data-a="${a.id}" data-k="${i+1}">${i+1}</button>`).join("")}
+      </div>
+      <div class="scale-ends"><span>Empty</span><span>Full</span></div>
+    </div>`).join("");
+  rows.querySelectorAll(".scale button").forEach(b=>b.addEventListener("click",()=>setScore(b.dataset.a,+b.dataset.k)));
+}
+function setScore(id,k){
+  scores[id]=k;
+  document.querySelectorAll(`.scale button[data-a="${id}"]`).forEach(b=>b.setAttribute("aria-checked", +b.dataset.k===k));
+  drawWheel(document.getElementById("rateWheel"), scores, {interactive:true});
+  const n = Object.keys(scores).length;
+  document.getElementById("progress").textContent = n<N ? `${n} of ${N} rated` : "All rated. Nice work.";
+  document.getElementById("toFocus").disabled = n<N;
+}
+
+function renderFocus(){
+  const p = prev();
+  drawWheel(document.getElementById("focusWheel"), scores, {previous: p ? p.scores : null});
+  document.getElementById("legend").hidden = !p;
+  const sorted = [...AREAS].sort((a,b)=>scores[a.id]-scores[b.id]);
+  const lo = sorted.slice(0,2), hi = sorted.slice(-2).reverse();
+  const vals = AREAS.map(a=>scores[a.id]); const spread = Math.max(...vals)-Math.min(...vals);
+  let txt = `You feel fullest in <strong>${hi.map(a=>a.name.toLowerCase()).join("</strong> and <strong>")}</strong>, and lowest in <strong>${lo.map(a=>a.name.toLowerCase()).join("</strong> and <strong>")}</strong>.`;
+  txt += spread>=5 ? " Your wheel is quite uneven right now, which usually means a couple of areas are asking for attention." : " Your wheel is fairly balanced, so small changes can go a long way.";
+  document.getElementById("summary").innerHTML = txt;
+  if(!focus.length) focus = lo.map(a=>a.id);
+  const pick = document.getElementById("pick");
+  pick.innerHTML = sorted.map(a=>{
+    let d = "";
+    if(p && p.scores[a.id]){ const diff = scores[a.id]-p.scores[a.id];
+      if(diff) d = `<span class="delta ${diff>0?"up":"down"}">${diff>0?"+":""}${diff} since last time</span>`; }
+    return `<label><input type="checkbox" value="${a.id}" ${focus.includes(a.id)?"checked":""}>
+      <span class="dot" style="background:${a.color};margin:0"></span>
+      <span class="nm">${a.name}</span><span class="sc">${scores[a.id]}/10${d}</span></label>`;
+  }).join("");
+  pick.querySelectorAll("input").forEach(inp=>inp.addEventListener("change",()=>{
+    if(inp.checked){ if(focus.length>=3){ inp.checked=false; return; } focus.push(inp.value); }
+    else focus = focus.filter(x=>x!==inp.value);
+    document.getElementById("toPlan").disabled = !focus.length;
+  }));
+  document.getElementById("toPlan").disabled = !focus.length;
+}
+
+function renderPlan(){
+  const body = document.getElementById("planBody");
+  let html = focus.map(id=>{
+    const a = byId[id], s = scores[id];
+    const doList = s<=4 ? a.low : s<=7 ? a.mid : [a.mid[0], a.mid[1], "Write down what's making this area work, so you can come back to it."];
+    return `<article class="area" style="--c:${a.color}"><div class="band"></div><div class="inner">
+      <div class="ttl"><h3>${a.name}</h3><span class="s">${s}<small> / 10</small></span></div>
+      <h4>Reflect on this</h4><ul>${a.reflect.map(r=>`<li>${r}</li>`).join("")}</ul>
+      <h4>Try this week</h4><ul class="do">${doList.map(r=>`<li><input type="checkbox" aria-label="Done"><span>${r}</span></li>`).join("")}</ul>
+      <h4>Go deeper</h4><div class="deeper">
+        <div><b>Read: ${a.book[0]}</b>by ${a.book[1]}<br><em>${a.book[2]}</em></div>
+        <div><b>Get support: ${a.support[0]}</b><em>${a.support[1]}</em></div>
+      </div></div></article>`;
+  }).join("");
+  const top = [...AREAS].sort((a,b)=>scores[b.id]-scores[a.id])[0];
+  html += `<div class="working"><h3>What's already working: ${top.name.toLowerCase()} (${scores[top.id]}/10)</h3>
+    <p>What makes this part of your life feel good? The habits, people or choices behind it might be the same ones that can lift the areas you chose.</p></div>`;
+  body.innerHTML = html;
+  saved = false; document.getElementById("save").disabled = false;
+  document.getElementById("save").textContent = "Save this check-in";
+  document.getElementById("saveNote").textContent = "";
+}
+
+/* events */
+document.getElementById("start").onclick = ()=>{ scores={}; focus=[]; renderRows(); drawWheel(document.getElementById("rateWheel"), scores, {interactive:true}); document.getElementById("progress").textContent=`0 of ${N} rated`; document.getElementById("toFocus").disabled=true; show("rate"); };
+document.getElementById("toFocus").onclick = ()=>{ renderFocus(); show("focus"); };
+document.getElementById("backRate").onclick = ()=>show("rate");
+document.getElementById("toPlan").onclick = ()=>{ renderPlan(); show("plan"); };
+document.getElementById("again").onclick = ()=>{ renderIntro(); show("intro"); };
+document.getElementById("home").onclick = ()=>{ renderIntro(); show("intro"); };
+document.getElementById("print").onclick = ()=>window.print();
+document.getElementById("save").onclick = ()=>{
+  if(saved) return;
+  const list = loadAll(); list.push({date:new Date().toISOString(), scores:{...scores}, focus:[...focus]});
+  const ok = saveAll(list.slice(-24));
+  const note = document.getElementById("saveNote");
+  if(ok){ saved=true; const b=document.getElementById("save"); b.textContent="Saved"; b.disabled=true;
+    note.textContent = "Saved on this device. Next time, your wheel will show how each area has changed."; }
+  else note.textContent = "This browser isn't allowing storage, so the check-in wasn't saved. Use Print my plan to keep a copy.";
+};
+
+renderIntro();
+</script>
+</body>
+</html>
