@@ -79,7 +79,7 @@ img,svg{max-width:100%;height:auto}
 button,a,input,label{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
-.wrap{max-width:1080px;margin:0 auto;padding:0 var(--pad-r) var(--bnav-space) var(--pad-x);width:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 var(--pad-r) 24px var(--pad-x);width:100%}
 header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;min-height:44px}
 .brand{display:flex;align-items:center;gap:6px;font-family:var(--serif);font-size:1.3rem;background:none;border:0;cursor:pointer;padding:8px 4px 8px 0;line-height:1;min-height:44px}
 .brand svg{width:42px;height:42px;flex:none;overflow:visible;display:block;margin-inline:-2px}
@@ -207,17 +207,24 @@ p{margin:0}
 .working{margin-top:40px;padding:22px 26px;border-radius:22px;border:1.5px dashed var(--line)}
 .working p{color:var(--muted);margin-top:6px}
 footer.site-foot{
-  margin:48px 0 0;
-  padding:28px 28px 24px;
-  border-radius:28px 28px 0 0;
+  width:100%;
+  margin:56px 0 0;
+  padding:32px var(--pad-r) calc(28px + var(--bnav-space)) var(--pad-x);
+  border-radius:0;
   background:#1a221c;
   color:#c8d4cc;
   border:0;
+  border-top:1px solid color-mix(in srgb, #fff 8%, transparent);
+}
+footer.site-foot .foot-inner{
+  max-width:1080px;
+  margin:0 auto;
 }
 footer.site-foot .foot-nav{
-  display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;
-  font-size:.9rem;margin:0 0 16px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;
+  font-size:.9rem;margin:0 0 14px;
 }
+footer.site-foot .foot-nav > span{opacity:.7;margin-right:4px}
 footer.site-foot .foot-nav button,
 footer.site-foot .foot-nav a{
   background:none;border:0;padding:0;color:#e8eee9;font:inherit;cursor:pointer;
@@ -225,9 +232,9 @@ footer.site-foot .foot-nav a{
 }
 footer.site-foot .foot-nav button:hover,
 footer.site-foot .foot-nav a:hover{color:#fff;text-decoration:underline}
-footer.site-foot .foot-copy{font-size:.82rem;opacity:.75;margin:0 0 14px}
+footer.site-foot .foot-copy{font-size:.82rem;opacity:.7;margin:0 0 14px}
 footer.site-foot .foot-note{
-  margin:0;max-width:46em;font-style:italic;font-size:.82rem;color:var(--coral);opacity:.95;line-height:1.5
+  margin:0;max-width:52em;font-style:italic;font-size:.82rem;color:var(--coral);opacity:.95;line-height:1.5
 }
 .legal{padding:10px 0 24px;max-width:640px}
 .legal h2{margin-bottom:8px}
@@ -494,7 +501,10 @@ footer.site-foot .foot-note{
     </section>
   </main>
 
-  <footer class="site-foot">
+</div>
+
+<footer class="site-foot">
+  <div class="foot-inner">
     <nav class="foot-nav" aria-label="Legal and feedback">
       <span>© 2026 HAI</span>
       <button type="button" data-nav="terms">Terms of service</button>
@@ -503,8 +513,8 @@ footer.site-foot .foot-note{
     </nav>
     <p class="foot-copy">Made for honest check-ins · Private on your device</p>
     <p class="foot-note">HAI is short for “How am I?” It is a reflection tool, not therapy or medical advice. If you're struggling, a licensed therapist can help. If you're in crisis in the US, call or text 988 to reach the Suicide &amp; Crisis Lifeline.</p>
-  </footer>
-</div>
+  </div>
+</footer>
 
 <nav class="bnav" id="bnav" aria-label="Main">
   <button type="button" data-nav="intro" class="on" aria-current="page">
