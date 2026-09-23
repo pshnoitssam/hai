@@ -177,35 +177,106 @@ p{margin:0}
 .legend span::before{content:"";display:inline-block;width:18px;height:0;border-top:1.5px dashed var(--ink);opacity:.6;vertical-align:middle;margin-right:6px}
 
 /* plan */
-.plan{padding:10px 0 24px;max-width:none;width:100%}
-.plan > p{margin-top:12px;max-width:46em}
-.area{margin-top:40px;background:color-mix(in srgb, var(--c) 14%, var(--surface));border:1.5px solid color-mix(in srgb, var(--c) 55%, transparent);border-radius:22px;overflow:hidden;box-shadow:inset 5px 0 0 var(--c)}
-.area .band{height:8px;background:var(--c)}
-.area .inner{padding:28px 32px 32px}
-.area .ttl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-.area .ttl h3{color:var(--c)}
-.area .ttl .s{font-family:var(--serif);font-size:1.6rem;color:var(--c)}
-.area .ttl .s small{font-size:.9rem;color:var(--muted);font-family:var(--sans)}
-.area h4{font-size:.95rem;font-weight:700;margin:24px 0 10px}
-.area ul{margin:0;padding-left:1.2em}
-.area li{margin:6px 0}
-.area ul.do{list-style:none;padding:0}
-.area ul.do li{display:flex;gap:10px;align-items:flex-start}
-.area ul.do input{margin-top:5px;width:22px;height:22px;accent-color:var(--c);flex:none}
+.plan{padding:10px 0 24px;max-width:820px;width:100%}
+.plan > .lede{margin-top:12px}
+.plan-tip{
+  margin-top:18px;padding:14px 16px;border-radius:14px;
+  background:var(--soft);border:1px solid var(--line);
+  font-size:.95rem;color:var(--ink);line-height:1.45
+}
+.plan-tip strong{font-weight:700}
+.plan-index{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.plan-index a{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 12px;min-height:40px;
+  border-radius:999px;text-decoration:none;font-size:.85rem;font-weight:600;
+  color:var(--ink);background:var(--surface);border:1px solid var(--line);
+}
+.plan-index a:hover{border-color:var(--c, var(--accent))}
+.plan-index i{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.working{
+  margin-top:28px;padding:20px 22px;border-radius:18px;
+  background:color-mix(in srgb, var(--sage) 14%, var(--surface));
+  border:1.5px solid color-mix(in srgb, var(--sage) 40%, transparent);
+}
+.working .eyebrow{display:block;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sage);margin-bottom:6px}
+.working h3{font-size:1.2rem;margin:0;color:var(--ink)}
+.working p{color:var(--muted);margin-top:8px;line-height:1.5}
+.area{
+  margin-top:28px;background:var(--surface);
+  border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  box-shadow:none;
+}
+.area .band{height:5px;background:var(--c)}
+.area .inner{padding:24px 26px 28px}
+.area .ttl{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.area .ttl h3{color:var(--ink);font-size:1.45rem}
+.area .ttl .s{
+  display:inline-flex;align-items:baseline;gap:2px;padding:6px 12px;border-radius:999px;
+  background:color-mix(in srgb, var(--c) 18%, transparent);border:1px solid color-mix(in srgb, var(--c) 35%, transparent);
+  font-family:var(--serif);font-size:1.25rem;color:var(--c);font-weight:400;
+}
+.area .ttl .s small{font-size:.8rem;color:var(--muted);font-family:var(--sans)}
+.area .block{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.area .block:first-of-type{margin-top:18px}
+.area .block-label{
+  display:flex;align-items:center;gap:10px;margin:0 0 12px;
+  font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--c);
+}
+.area .block-label span{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;
+  font-size:.72rem;letter-spacing:0;font-family:var(--sans);
+}
+.area .block p.hint{margin:0 0 12px;font-size:.92rem;color:var(--muted);line-height:1.45}
+.area ul.reflect{margin:0;padding:0;list-style:none}
+.area ul.reflect li{
+  position:relative;margin:0 0 10px;padding:12px 14px 12px 36px;
+  background:color-mix(in srgb, var(--c) 8%, var(--soft));
+  border-radius:12px;line-height:1.45;color:var(--ink);
+}
+.area ul.reflect li::before{
+  content:"?";position:absolute;left:12px;top:13px;
+  width:16px;height:16px;border-radius:50%;
+  text-align:center;line-height:16px;
+  font-size:.7rem;font-weight:700;color:var(--c);
+  background:color-mix(in srgb, var(--c) 18%, transparent);
+}
+.area ul.do{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.area ul.do li{
+  display:flex;gap:12px;align-items:flex-start;margin:0;
+  padding:14px 16px;border-radius:14px;background:color-mix(in srgb, var(--c) 10%, var(--surface));
+  border:1px solid color-mix(in srgb, var(--c) 22%, transparent);
+}
+.area ul.do input{margin-top:2px;width:22px;height:22px;accent-color:var(--c);flex:none}
 .area ul.do input:checked + span{text-decoration:line-through;color:var(--muted)}
-.deeper{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.deeper div{background:color-mix(in srgb, var(--c) 10%, var(--soft));border:1px solid color-mix(in srgb, var(--c) 28%, transparent);border-radius:14px;padding:16px 18px;font-size:.95rem;min-width:0}
-.deeper b{display:block;margin-bottom:4px}
-.deeper em{font-style:normal;color:var(--muted)}
-.deeper .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.deeper .links a{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:10px 14px;min-height:40px;border-radius:999px;font-size:.85rem;font-weight:600;text-decoration:none;color:#fff;background:var(--c);opacity:.92}
-.deeper .links a:hover{opacity:1}
-.deeper .begin{display:block;margin:10px 0 0;padding:0;list-style:none}
-.deeper .begin li{display:block;position:relative;margin:8px 0;padding-left:14px;font-size:.9rem;line-height:1.45;color:var(--ink);opacity:.9}
+.area ul.do span{line-height:1.45}
+.deeper{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.deeper > div{
+  background:color-mix(in srgb, var(--c) 8%, var(--soft));
+  border:1px solid color-mix(in srgb, var(--c) 20%, transparent);
+  border-radius:14px;padding:16px 16px 14px;font-size:.95rem;min-width:0;
+  display:flex;flex-direction:column;gap:6px;
+}
+.deeper .chip{
+  display:inline-flex;align-self:flex-start;padding:3px 8px;border-radius:999px;
+  font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:#fff;background:var(--c);margin-bottom:2px;
+}
+.deeper b{display:block;margin:0;line-height:1.3;color:var(--ink)}
+.deeper .by{font-size:.88rem;color:var(--muted)}
+.deeper em{font-style:normal;color:var(--muted);font-size:.9rem;line-height:1.4}
+.deeper .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:10px}
+.deeper .links a{
+  display:inline-flex;align-items:center;justify-content:center;gap:4px;
+  padding:9px 12px;min-height:40px;border-radius:999px;font-size:.82rem;font-weight:600;
+  text-decoration:none;color:#fff;background:var(--c);
+}
+.deeper .links a:hover{filter:brightness(1.06)}
+.deeper .begin{display:block;margin:6px 0 0;padding:0;list-style:none}
+.deeper .begin li{display:block;position:relative;margin:6px 0;padding-left:14px;font-size:.88rem;line-height:1.45;color:var(--ink);opacity:.92}
 .deeper .begin li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--c)}
-.deeper .how-label{display:block;margin-top:12px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c);opacity:.85}
-.working{margin-top:40px;padding:22px 26px;border-radius:22px;border:1.5px dashed var(--line)}
-.working p{color:var(--muted);margin-top:6px}
+.deeper .how-label{display:block;margin-top:8px;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c);opacity:.9}
+.plan .actions{margin-top:32px;padding-top:8px}
 footer.site-foot{
   width:100%;
   margin:56px 0 0;
@@ -421,7 +492,8 @@ footer.site-foot .foot-note{
   <main id="v-plan" hidden>
     <section class="plan">
       <h2>Your suggested wellness plan</h2>
-      <p class="lede">Start small. Pick one thing from each area to try this week, and come back in a month to see how your wheel has changed.</p>
+      <p class="lede">A simple path for the areas you chose — reflect, try one small thing, then go deeper if you want.</p>
+      <p class="plan-tip"><strong>This week:</strong> pick one checkbox from each area below. Small and done beats perfect and postponed.</p>
       <div id="planBody"></div>
       <div class="actions">
         <button class="btn" id="save">Save this check-in</button>
@@ -1057,28 +1129,63 @@ function renderFocus(){
 
 function renderPlan(){
   const body = document.getElementById("planBody");
-  let html = focus.map(id=>{
+  const top = [...AREAS].sort((a,b)=>scores[b.id]-scores[a.id])[0];
+  const jump = focus.length > 1
+    ? `<nav class="plan-index" aria-label="Areas in your plan">${focus.map(id=>{
+        const a = byId[id];
+        return `<a href="#plan-${a.id}" style="--c:${a.color}"><i></i>${a.name}</a>`;
+      }).join("")}</nav>`
+    : "";
+  const working = `<aside class="working">
+    <span class="eyebrow">Strength to borrow from</span>
+    <h3>What's already working for you: ${top.name.toLowerCase()} (${scores[top.id]}/10)</h3>
+    <p>What makes this part of your life feel good? The habits, people, or choices behind it might be the same ones that can lift the areas you chose.</p>
+  </aside>`;
+  const cards = focus.map((id, i)=>{
     const a = byId[id], s = scores[id];
     const doList = s<=4 ? a.low : s<=7 ? a.mid : [a.mid[0], a.mid[1], "Write down what's making this area work, so you can come back to it."];
-    return `<article class="area" style="--c:${a.color}"><div class="band"></div><div class="inner">
-      <div class="ttl"><h3>${a.name}</h3><span class="s">${s}<small> / 10</small></span></div>
-      <h4>Reflect on this</h4><ul>${a.reflect.map(r=>`<li>${r}</li>`).join("")}</ul>
-      <h4>Try this week</h4><ul class="do">${doList.map(r=>`<li><input type="checkbox" aria-label="Done"><span>${r}</span></li>`).join("")}</ul>
-      <h4>Go deeper</h4><div class="deeper">
-        <div><b>Read: ${a.book[0]}</b>by ${a.book[1]}<br><em>${a.book[2]}</em>
-          <div class="links"><a href="${a.book[3]}" target="_blank" rel="noopener noreferrer">Find on Amazon</a></div>
+    return `<article class="area" id="plan-${a.id}" style="--c:${a.color}">
+      <div class="band"></div>
+      <div class="inner">
+        <div class="ttl">
+          <h3>${a.name}</h3>
+          <span class="s">${s}<small>/10</small></span>
         </div>
-        <div><b>Get support: ${a.support.title}</b><em>${a.support.blurb}</em>
-          <span class="how-label">How to begin</span>
-          <ul class="begin">${a.support.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
-          <div class="links">${(a.support.links||[]).map(l=>`<a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join("")}</div>
+        <div class="block">
+          <h4 class="block-label"><span>${i+1}</span> Reflect</h4>
+          <p class="hint">Sit with these before you jump to action.</p>
+          <ul class="reflect">${a.reflect.map(r=>`<li>${r}</li>`).join("")}</ul>
         </div>
-      </div></div></article>`;
+        <div class="block">
+          <h4 class="block-label"><span>✓</span> Try this week</h4>
+          <p class="hint">Check off one thing. That's enough.</p>
+          <ul class="do">${doList.map(r=>`<li><input type="checkbox" aria-label="Done"><span>${r}</span></li>`).join("")}</ul>
+        </div>
+        <div class="block">
+          <h4 class="block-label"><span>+</span> Go deeper</h4>
+          <p class="hint">Optional — when you want a book or real-world support.</p>
+          <div class="deeper">
+            <div>
+              <span class="chip">Read</span>
+              <b>${a.book[0]}</b>
+              <span class="by">by ${a.book[1]}</span>
+              <em>${a.book[2]}</em>
+              <div class="links"><a href="${a.book[3]}" target="_blank" rel="noopener noreferrer">Find on Amazon</a></div>
+            </div>
+            <div>
+              <span class="chip">Support</span>
+              <b>${a.support.title}</b>
+              <em>${a.support.blurb}</em>
+              <span class="how-label">How to begin</span>
+              <ul class="begin">${a.support.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
+              <div class="links">${(a.support.links||[]).map(l=>`<a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join("")}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>`;
   }).join("");
-  const top = [...AREAS].sort((a,b)=>scores[b.id]-scores[a.id])[0];
-  html += `<div class="working"><h3>What's already working for you: ${top.name.toLowerCase()} (${scores[top.id]}/10)</h3>
-    <p>What makes this part of your life feel good? The habits, people, or choices behind it might be the same ones that can lift the areas you chose.</p></div>`;
-  body.innerHTML = html;
+  body.innerHTML = jump + working + cards;
   saved = false; document.getElementById("save").disabled = false;
   document.getElementById("save").textContent = "Save this check-in";
   document.getElementById("saveNote").textContent = "";
