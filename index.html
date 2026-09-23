@@ -1076,8 +1076,8 @@ function renderPlan(){
       </div></div></article>`;
   }).join("");
   const top = [...AREAS].sort((a,b)=>scores[b.id]-scores[a.id])[0];
-  html += `<div class="working"><h3>What's already in bloom: ${top.name.toLowerCase()} (${scores[top.id]}/10)</h3>
-    <p>What makes this part of your life feel good? The habits, people or choices behind it might be the same ones that can lift the areas you chose.</p></div>`;
+  html += `<div class="working"><h3>What's already working for you: ${top.name.toLowerCase()} (${scores[top.id]}/10)</h3>
+    <p>What makes this part of your life feel good? The habits, people, or choices behind it might be the same ones that can lift the areas you chose.</p></div>`;
   body.innerHTML = html;
   saved = false; document.getElementById("save").disabled = false;
   document.getElementById("save").textContent = "Save this check-in";
