@@ -1,0 +1,24 @@
+{
+  "name": "HAI — How am I?",
+  "short_name": "HAI",
+  "description": "Rate nine areas of your life and get a small, practical plan.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#243028",
+  "theme_color": "#243028",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
