@@ -133,11 +133,11 @@ p{margin:0}
 .legend span::before{content:"";display:inline-block;width:18px;height:0;border-top:1.5px dashed var(--ink);opacity:.6;vertical-align:middle;margin-right:6px}
 
 /* plan */
-.plan{padding:10px 0 80px;max-width:760px}
-.plan > p{margin-top:12px}
+.plan{padding:10px 0 80px;max-width:none;width:100%}
+.plan > p{margin-top:12px;max-width:46em}
 .area{margin-top:40px;background:color-mix(in srgb, var(--c) 14%, var(--surface));border:1.5px solid color-mix(in srgb, var(--c) 55%, transparent);border-radius:22px;overflow:hidden;box-shadow:inset 5px 0 0 var(--c)}
 .area .band{height:8px;background:var(--c)}
-.area .inner{padding:26px 28px 28px}
+.area .inner{padding:28px 32px 32px}
 .area .ttl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
 .area .ttl h3{color:var(--c)}
 .area .ttl .s{font-family:var(--serif);font-size:1.6rem;color:var(--c)}
@@ -149,16 +149,16 @@ p{margin:0}
 .area ul.do li{display:flex;gap:10px;align-items:flex-start}
 .area ul.do input{margin-top:5px;width:18px;height:18px;accent-color:var(--c);flex:none}
 .area ul.do input:checked + span{text-decoration:line-through;color:var(--muted)}
-.deeper{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.deeper div{background:color-mix(in srgb, var(--c) 10%, var(--soft));border:1px solid color-mix(in srgb, var(--c) 28%, transparent);border-radius:14px;padding:14px 16px;font-size:.95rem}
+.deeper{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.deeper div{background:color-mix(in srgb, var(--c) 10%, var(--soft));border:1px solid color-mix(in srgb, var(--c) 28%, transparent);border-radius:14px;padding:16px 18px;font-size:.95rem;min-width:0}
 .deeper b{display:block;margin-bottom:4px}
 .deeper em{font-style:normal;color:var(--muted)}
 .deeper .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .deeper .links a{display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:999px;font-size:.82rem;font-weight:600;text-decoration:none;color:#fff;background:var(--c);opacity:.92}
 .deeper .links a:hover{opacity:1}
-.deeper .how{margin:10px 0 0;padding:0;list-style:none}
-.deeper .how li{position:relative;margin:6px 0;padding-left:14px;font-size:.88rem;color:var(--ink);opacity:.9}
-.deeper .how li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--c)}
+.deeper .begin{display:block;margin:10px 0 0;padding:0;list-style:none}
+.deeper .begin li{display:block;position:relative;margin:8px 0;padding-left:14px;font-size:.9rem;line-height:1.45;color:var(--ink);opacity:.9}
+.deeper .begin li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--c)}
 .deeper .how-label{display:block;margin-top:12px;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c);opacity:.85}
 .working{margin-top:40px;padding:22px 26px;border-radius:22px;border:1.5px dashed var(--line)}
 .working p{color:var(--muted);margin-top:6px}
@@ -749,7 +749,7 @@ function renderPlan(){
         </div>
         <div><b>Get support: ${a.support.title}</b><em>${a.support.blurb}</em>
           <span class="how-label">How to begin</span>
-          <ul class="how">${a.support.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
+          <ul class="begin">${a.support.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
           <div class="links">${(a.support.links||[]).map(l=>`<a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label}</a>`).join("")}</div>
         </div>
       </div></div></article>`;
