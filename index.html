@@ -3,15 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Bloomwheel — a Wheel of Life check-in for women</title>
+<title>HAI — How am I? A Wheel of Life check-in</title>
 <meta name="description" content="Rate nine areas of your life, see your wheel, and get a small, practical plan for the areas you want to grow.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#FDF0F5; --surface:#FFFFFF; --ink:#3A1F33; --muted:#7D5A70; --line:#F3D3E1;
-  --accent:#D6457F; --accent-ink:#FFFFFF; --soft:#FBE1EC;
+  /* Vapor Sweetheart: #D0EE88 #E79A9A #F2EAEA #739673 #6585A5 — wheel/area colors unchanged */
+  --bg:#F2EAEA; --surface:#FFFFFF; --ink:#3A4F63; --muted:#6585A5; --line:#E0D4D4;
+  --accent:#739673; --accent-ink:#FFFFFF; --soft:#EAF6D0;
+  --lime:#D0EE88; --coral:#E79A9A; --mist:#F2EAEA; --sage:#739673; --slate:#6585A5;
   --serif:"Young Serif", Georgia, "Times New Roman", serif;
   --sans:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   box-sizing:border-box;
@@ -20,13 +22,13 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#1F1219; --surface:#2B1A25; --ink:#FBEAF2; --muted:#C9A3B8; --line:#4A2D3E;
-    --accent:#FF8DB9; --accent-ink:#1F1219; --soft:#3B2131;
+    --bg:#243028; --surface:#2F3D34; --ink:#F2EAEA; --muted:#A8B8C8; --line:#3F5248;
+    --accent:#739673; --accent-ink:#FFFFFF; --soft:#354A3A;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#1F1219; --surface:#2B1A25; --ink:#FBEAF2; --muted:#C9A3B8; --line:#4A2D3E;
-  --accent:#FF8DB9; --accent-ink:#1F1219; --soft:#3B2131;
+  --bg:#243028; --surface:#2F3D34; --ink:#F2EAEA; --muted:#A8B8C8; --line:#3F5248;
+  --accent:#739673; --accent-ink:#FFFFFF; --soft:#354A3A;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -37,16 +39,24 @@ button{font:inherit;color:inherit}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 header.top{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
 .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.3rem;background:none;border:0;cursor:pointer;padding:0}
-.brand svg{width:28px;height:28px}
+.brand svg{width:30px;height:30px;flex:none}
 .steps{display:flex;gap:6px;list-style:none;margin:0;padding:0;font-size:.85rem;color:var(--muted)}
 .steps li{padding:4px 10px;border-radius:999px}
-.steps li.on{background:var(--soft);color:var(--ink);font-weight:600}
+.steps li.on{font-weight:600;color:#fff}
+.steps li.on[data-s="rate"]{background:var(--coral)}
+.steps li.on[data-s="focus"]{background:var(--sage)}
+.steps li.on[data-s="plan"]{background:var(--slate)}
 h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.15;margin:0}
 h1{font-size:clamp(2.5rem,6vw,4.4rem);letter-spacing:-.01em}
+.hero-title span{display:inline-block;opacity:0;transform:translateY(.4em);animation:haiTitleIn .9s cubic-bezier(.22,1,.36,1) forwards}
+.hero-title span:nth-child(2){animation-delay:.18s}
+@keyframes haiTitleIn{
+  to{opacity:1;transform:translateY(0)}
+}
 h2{font-size:clamp(1.8rem,3.6vw,2.6rem)}
 h3{font-size:1.25rem}
 p{margin:0}
-.lede{font-size:1.15rem;color:var(--muted);max-width:34em;margin-top:18px}
+.lede{font-size:1.15rem;color:var(--ink);opacity:.82;max-width:34em;margin-top:18px}
 .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:14px 26px;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-ink);transition:transform .15s}
 .btn:hover{transform:translateY(-1px)}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
@@ -56,26 +66,25 @@ p{margin:0}
 
 /* intro */
 .hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;padding:30px 0 60px}
-.hero .wheel{max-width:480px;justify-self:center;width:100%}
+.hero .wheel{max-width:520px;justify-self:center;width:100%}
 .how{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;padding:40px 0 70px;border-top:1px solid var(--line)}
 .how h3{margin-bottom:8px}
 .how p{color:var(--muted)}
 .how .n{font-family:var(--serif);font-size:2rem;color:var(--accent);display:block;margin-bottom:6px}
 .last{margin-top:22px;padding:14px 18px;background:var(--soft);border-radius:14px;font-size:.95rem;max-width:34em}
 
-/* wheel */
+/* wheel — face features = life areas */
 .wheel svg{display:block;width:100%;height:auto;overflow:visible}
-.wheel .ring{fill:none;stroke:var(--line);stroke-width:1}
-.wheel .spoke{stroke:var(--line);stroke-width:1}
-.wheel .fillw{transition:d .35s ease}
-.wheel .prev{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 4;opacity:.55}
-.wheel .hit{fill:transparent;cursor:pointer}
-.wheel .hit:hover{fill:var(--ink);fill-opacity:.08}
-.wheel .lbl{font-family:var(--sans);font-size:14px;font-weight:600;fill:var(--ink)}
-.wheel .lblscore{font-size:13px;font-weight:500;fill:var(--muted)}
-.wheel .hub{fill:var(--surface);stroke:var(--line)}
-.wheel .hubtxt{font-family:var(--serif);font-size:26px;fill:var(--ink)}
-.wheel .hubsub{font-size:11px;fill:var(--muted)}
+.wheel .feat{transition:opacity .25s ease,transform .25s ease}
+.wheel .hit{cursor:pointer;fill:transparent}
+.wheel .hit:hover{fill:var(--ink);fill-opacity:.06}
+.wheel .badge{font-family:var(--sans);font-size:12px;font-weight:700;fill:#fff;pointer-events:none}
+.wheel .badge-bg{stroke:#fff;stroke-width:2}
+.wheel .lbl{font-family:var(--sans);font-size:16px;font-weight:600;fill:var(--ink)}
+.wheel .lbl-mute{fill:var(--muted);font-weight:500;font-size:14px}
+.wheel .avg{font-family:var(--serif);font-size:26px;fill:var(--ink)}
+.wheel .avgsub{font-size:13px;fill:var(--muted)}
+.wheel .prev-ring{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 4;opacity:.4}
 
 /* rate */
 .rate{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px;padding:10px 0 80px;align-items:start}
@@ -105,9 +114,9 @@ p{margin:0}
 .pick .nm{flex:1;font-weight:600}
 .pick .sc{font-variant-numeric:tabular-nums;color:var(--muted)}
 .delta{font-size:.8rem;margin-left:6px}
-.delta.up{color:#3F9C80}.delta.down{color:#D6457F}
+.delta.up{color:var(--sage)}.delta.down{color:var(--coral)}
 .legend{display:flex;gap:16px;font-size:.85rem;color:var(--muted);margin-top:10px;justify-content:center}
-.legend span::before{content:"";display:inline-block;width:18px;height:0;border-top:1.5px dashed var(--ink);opacity:.6;vertical-align:middle;margin-right:6px}
+.legend span::before{content:"";display:inline-block;width:14px;height:14px;border:1.5px dashed var(--ink);border-radius:50%;opacity:.6;vertical-align:middle;margin-right:6px;box-sizing:border-box}
 
 /* plan */
 .plan{padding:10px 0 80px;max-width:760px}
@@ -131,8 +140,8 @@ p{margin:0}
 .deeper em{font-style:normal;color:var(--muted)}
 .working{margin-top:40px;padding:22px 26px;border-radius:22px;border:1.5px dashed var(--line)}
 .working p{color:var(--muted);margin-top:6px}
-footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.85rem;color:var(--muted)}
-footer p{max-width:46em}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.85rem}
+footer p{max-width:46em;font-style:italic;color:var(--coral)}
 
 [hidden]{display:none!important}
 @media (max-width:820px){
@@ -151,9 +160,28 @@ footer p{max-width:46em}
 <body>
 <div class="wrap">
   <header class="top">
-    <button class="brand" id="home" aria-label="Bloomwheel, back to start">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16 L16 4 A12 12 0 0 1 26.4 10 Z" fill="#F4A3BE"/><path d="M16 16 L26.4 10 A12 12 0 0 1 24 25 Z" fill="#B86BC9"/><path d="M16 16 L24 25 A12 12 0 0 1 9 25.6 Z" fill="#E0457B"/></svg>
-      Bloomwheel
+    <button class="brand" id="home" aria-label="HAI, back to start">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <!-- Interlocking U-links (connected whole-person mark) -->
+        <defs>
+          <path id="hai-u" d="M11 16V9.1A5 5 0 0 1 21 9.1V16"/>
+        </defs>
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <g stroke="#6585A5" stroke-opacity=".25" stroke-width="4.4">
+            <use href="#hai-u" transform="rotate(0 16 16)"/>
+            <use href="#hai-u" transform="rotate(72 16 16)"/>
+            <use href="#hai-u" transform="rotate(144 16 16)"/>
+            <use href="#hai-u" transform="rotate(216 16 16)"/>
+            <use href="#hai-u" transform="rotate(288 16 16)"/>
+          </g>
+          <use href="#hai-u" stroke="#D0EE88" stroke-width="2.7" transform="rotate(0 16 16)"/>
+          <use href="#hai-u" stroke="#E79A9A" stroke-width="2.7" transform="rotate(72 16 16)"/>
+          <use href="#hai-u" stroke="#F2EAEA" stroke-width="2.7" transform="rotate(144 16 16)"/>
+          <use href="#hai-u" stroke="#739673" stroke-width="2.7" transform="rotate(216 16 16)"/>
+          <use href="#hai-u" stroke="#6585A5" stroke-width="2.7" transform="rotate(288 16 16)"/>
+        </g>
+      </svg>
+      HAI
     </button>
     <ol class="steps" id="steps" hidden>
       <li data-s="rate">Rate</li><li data-s="focus">Choose</li><li data-s="plan">Plan</li>
@@ -164,10 +192,10 @@ footer p{max-width:46em}
   <main id="v-intro">
     <section class="hero">
       <div>
-        <h1>How's your life, really?</h1>
-        <p class="lede">Rate nine parts of your life from 1 to 10. See where you feel full and where you're running low, then get a short, practical plan for the areas you want to work on. It takes about five minutes.</p>
+        <h1 class="hero-title"><span>How am I,</span> <span>really?</span></h1>
+        <p class="lede">Rate nine parts of your life from 1 to 10.<br>See where you feel full and where you're running low, then get a short, practical plan for the areas you want to work on.<br>It takes about 5 mins to check in.</p>
         <div class="actions">
-          <button class="btn" id="start">Start my check-in</button>
+          <button class="btn" id="start">Start your check-in</button>
           <span class="note">Private. Your answers stay in your browser.</span>
         </div>
         <div class="last" id="last" hidden></div>
@@ -175,9 +203,9 @@ footer p{max-width:46em}
       <div class="wheel" id="heroWheel" aria-hidden="true"></div>
     </section>
     <section class="how">
-      <div><span class="n">1</span><h3>Rate each area</h3><p>Work, money, health, friends, love and more. Go with your gut — there are no right answers.</p></div>
-      <div><span class="n">2</span><h3>See the shape</h3><p>Your answers form a wheel. A bumpy wheel shows where life feels lopsided right now.</p></div>
-      <div><span class="n">3</span><h3>Pick what matters</h3><p>Choose up to three areas. You'll get questions to reflect on, small steps for this week and resources to go deeper.</p></div>
+      <div><span class="n">1</span><h3>Rate each wellness area</h3><p>Work, money, health, friends, love and more. Go with your gut — there are no right answers.</p></div>
+      <div><span class="n">2</span><h3>Reflect on your face map</h3><p>Each feature stands for a part of life. Fuller areas look brighter and bigger; quieter ones stay soft.</p></div>
+      <div><span class="n">3</span><h3>Pick what matters right now</h3><p>Choose up to three areas. You'll get questions to reflect on, small steps for this week and resources to go deeper.</p></div>
     </section>
   </main>
 
@@ -186,7 +214,7 @@ footer p{max-width:46em}
     <section class="rate">
       <div class="stick">
         <h2>Right now, how full is each part of your life?</h2>
-        <p>1 means empty, 10 means you wouldn't change a thing. Tap a number, or tap the wheel.</p>
+        <p>1 means empty, 10 means you wouldn't change a thing. Tap a number, or tap a face feature to rate that area.</p>
         <div class="wheel" id="rateWheel" style="margin-top:20px"></div>
       </div>
       <div>
@@ -233,7 +261,7 @@ footer p{max-width:46em}
   </main>
 
   <footer>
-    <p>Bloomwheel is a reflection tool, not therapy or medical advice. If you're struggling, a licensed therapist can help. If you're in crisis in the US, call or text 988 to reach the Suicide &amp; Crisis Lifeline.</p>
+    <p>HAI is short for “How am I?” It is a reflection tool, not therapy or medical advice. If you're struggling, a licensed therapist can help. If you're in crisis in the US, call or text 988 to reach the Suicide &amp; Crisis Lifeline.</p>
   </footer>
 </div>
 
@@ -304,7 +332,7 @@ const AREAS = [
    support:["A standing plan","A weekly slot for something you enjoy, shared with a friend."]}
 ];
 const byId = Object.fromEntries(AREAS.map(a=>[a.id,a]));
-const KEY = "bloomwheel.checkins";
+const KEY = "hai.checkins";
 let scores = {}, focus = [], saved = false;
 
 /* storage */
@@ -312,39 +340,206 @@ function loadAll(){ try{ return JSON.parse(localStorage.getItem(KEY)) || []; }ca
 function saveAll(list){ try{ localStorage.setItem(KEY, JSON.stringify(list)); return true; }catch(e){ return false; } }
 const prev = () => { const l = loadAll(); return l.length ? l[l.length-1] : null; };
 
-/* wheel */
-const CX=260, CY=260, R0=34, R=180, N=AREAS.length, STEP=360/N;
-const rk = k => R0 + k*(R-R0)/10;
-const rad = d => d*Math.PI/180;
-const pt = (r,a) => [CX + r*Math.cos(rad(a)), CY + r*Math.sin(rad(a))];
-function sector(r0,r1,a0,a1){
-  const [x1,y1]=pt(r1,a0),[x2,y2]=pt(r1,a1),[x3,y3]=pt(r0,a1),[x4,y4]=pt(r0,a0);
-  return `M${x1.toFixed(2)} ${y1.toFixed(2)}A${r1} ${r1} 0 0 1 ${x2.toFixed(2)} ${y2.toFixed(2)}L${x3.toFixed(2)} ${y3.toFixed(2)}A${r0} ${r0} 0 0 0 ${x4.toFixed(2)} ${y4.toFixed(2)}Z`;
-}
+/* wheel — each life area maps to a face feature */
+const N=AREAS.length;
+const FEATURE = {
+  growth:  {key:"hair",     label:"Hair",      tip:"Growth & purpose"},
+  mind:    {key:"forehead", label:"Forehead",  tip:"Mind & emotions"},
+  career:  {key:"brows",    label:"Brows",     tip:"Work & career"},
+  fun:     {key:"eyes",     label:"Eyes",      tip:"Fun & rest"},
+  friends: {key:"cheekL",   label:"L. cheek",  tip:"Friends"},
+  family:  {key:"cheekR",   label:"R. cheek",  tip:"Family"},
+  money:   {key:"nose",     label:"Nose",      tip:"Money"},
+  love:    {key:"mouth",    label:"Mouth",     tip:"Love & romance"},
+  health:  {key:"skin",     label:"Face",      tip:"Body & health"}
+};
+
 function drawWheel(el, s, {interactive=false, previous=null, hub=true}={}){
-  let g = "";
-  for(let k=1;k<=10;k++) g += `<circle class="ring" cx="${CX}" cy="${CY}" r="${rk(k)}"/>`;
-  AREAS.forEach((a,i)=>{
-    const a0 = -90 + i*STEP;
-    const [x,y] = pt(R, a0); const [xi,yi] = pt(R0, a0);
-    g += `<line class="spoke" x1="${xi}" y1="${yi}" x2="${x}" y2="${y}"/>`;
-    if(s[a.id]) g += `<path class="fillw" fill="${a.color}" fill-opacity=".88" d="${sector(R0, rk(s[a.id]), a0+1, a0+STEP-1)}"/>`;
-    if(previous && previous[a.id]) g += `<path class="prev" d="${sector(R0, rk(previous[a.id]), a0+1, a0+STEP-1)}"/>`;
-    if(interactive){
-      for(let k=1;k<=10;k++) g += `<path class="hit" data-a="${a.id}" data-k="${k}" d="${sector(rk(k-1), rk(k), a0, a0+STEP)}"><title>${a.name}: ${k}</title></path>`;
+  const sc = id => s[id] || 0;
+  const col = id => byId[id].color;
+  const rated = id => !!s[id];
+  // unified face palette — scores tint stroke color only, never reshape the face
+  const ink = "#5A6F82";
+  const skin = "#E79A9A";
+  const hairBase = "#739673";
+  const feat = (id, fallback=ink) => rated(id) ? col(id) : fallback;
+  const w = (id, base=3.2) => rated(id) ? (base + sc(id)*0.18).toFixed(1) : base.toFixed(1);
+  const a = (id, rest=0.55, full=1) => rated(id) ? (rest + (sc(id)/10)*(full-rest)).toFixed(2) : rest.toFixed(2);
+
+  let g = `
+    <!-- one cohesive figure (shifted right to clear the key) -->
+    <g class="face-unit" transform="translate(155 0) translate(260 310) scale(1.28) translate(-260 -310)">
+      <!-- hair (Growth): bob with side locks + scalloped bangs (not a dome) -->
+      <g opacity="${a("growth",0.95,1)}">
+        <!-- back mass behind head -->
+        <path fill="${feat("growth", hairBase)}" d="
+          M190 230
+          C175 200 178 155 205 135
+          C225 120 245 115 260 115
+          C275 115 295 120 315 135
+          C342 155 345 200 330 230
+          L330 230 L190 230 Z"/>
+      </g>
+
+      <!-- neck flush under chin -->
+      <rect x="234" y="410" width="52" height="48" fill="${skin}"/>
+
+      <!-- ears -->
+      <ellipse cx="162" cy="312" rx="20" ry="26" fill="${skin}"/>
+      <ellipse cx="162" cy="312" rx="9" ry="13" fill="${ink}" fill-opacity=".22"/>
+      <ellipse cx="358" cy="312" rx="20" ry="26" fill="${skin}"/>
+      <ellipse cx="358" cy="312" rx="9" ry="13" fill="${ink}" fill-opacity=".22"/>
+
+      <!-- head (Body & health) -->
+      <path fill="${skin}" d="M186 228h148c16 0 28 12 28 28v108c0 58-40 92-102 92S158 422 158 364V256c0-16 12-28 28-28z"/>
+      <path fill="${feat("health", skin)}" fill-opacity="${rated("health")?a("health",0.12,0.35):0}"
+        d="M186 228h148c16 0 28 12 28 28v108c0 58-40 92-102 92S158 422 158 364V256c0-16 12-28 28-28z"/>
+
+      <!-- side locks + crown in FRONT so they frame the face -->
+      <g opacity="${a("growth",0.95,1)}">
+        <path fill="${feat("growth", hairBase)}" d="
+          M186 230
+          C165 245 152 280 155 320
+          C158 360 168 400 182 418
+          C190 425 200 418 198 405
+          C194 370 192 320 196 275
+          C198 250 192 235 186 230
+          Z"/>
+        <path fill="${feat("growth", hairBase)}" d="
+          M334 230
+          C355 245 368 280 365 320
+          C362 360 352 400 338 418
+          C330 425 320 418 322 405
+          C326 370 328 320 324 275
+          C322 250 328 235 334 230
+          Z"/>
+        <path fill="${feat("growth", hairBase)}" d="
+          M186 232
+          C186 200 195 165 220 145
+          C235 135 248 142 260 138
+          C272 142 285 135 300 145
+          C325 165 334 200 334 232
+          C310 218 285 212 260 212
+          C235 212 210 218 186 232
+          Z"/>
+        <g fill="none" stroke="${skin}" stroke-opacity=".4" stroke-width="1.8" stroke-linecap="round">
+          <path d="M230 148c4 28 2 50-4 72"/>
+          <path d="M260 140c0 30-2 55-2 78"/>
+          <path d="M290 148c-4 28-2 50 4 72"/>
+          <path d="M175 280c-2 40 2 80 10 110"/>
+          <path d="M345 280c2 40-2 80-10 110"/>
+        </g>
+      </g>
+
+      <!-- mind: forehead shape (curved band above brows) -->
+      <g class="feat" data-a="mind" opacity="${rated("mind")?a("mind",0.35,0.7):0.22}">
+        <path fill="${feat("mind", "#C9B8DC")}" d="
+          M192 232
+          C220 228 240 226 260 226
+          C280 226 300 228 328 232
+          C332 248 330 262 318 272
+          C300 268 280 266 260 266
+          C240 266 220 268 202 272
+          C190 262 188 248 192 232
+          Z"/>
+      </g>
+
+      <!-- brows (Work) -->
+      <g fill="none" stroke="${feat("career")}" stroke-linecap="round" stroke-width="${w("career",3.4)}" opacity="${a("career",0.7,1)}">
+        <path d="M198 286c14-8 30-10 42-6"/>
+        <path d="M280 280c12-4 28-2 42 6"/>
+      </g>
+
+      <!-- eyes (Fun & rest) -->
+      <g fill="none" stroke="${feat("fun")}" stroke-linecap="round" stroke-width="${w("fun",4)}" opacity="${a("fun",0.75,1)}">
+        <path d="M202 316c8 10 18 15 26 15s18-5 26-15"/>
+        <path d="M266 316c8 10 18 15 26 15s18-5 26-15"/>
+      </g>
+
+      <!-- cheeks (Friends / Family): even parallel blush marks, mirrored -->
+      <g fill="none" stroke="${feat("friends")}" stroke-linecap="round" stroke-width="${w("friends",2.6)}" opacity="${a("friends",0.7,1)}">
+        <path d="M192 338l11 13"/>
+        <path d="M203 338l11 13"/>
+        <path d="M214 338l11 13"/>
+      </g>
+      <g fill="none" stroke="${feat("family")}" stroke-linecap="round" stroke-width="${w("family",2.6)}" opacity="${a("family",0.7,1)}">
+        <path d="M328 338l-11 13"/>
+        <path d="M317 338l-11 13"/>
+        <path d="M306 338l-11 13"/>
+      </g>
+
+      <!-- nose (Money) -->
+      <g fill="none" stroke="${feat("money")}" stroke-linecap="round" stroke-linejoin="round" stroke-width="${w("money",3.2)}" opacity="${a("money",0.75,1)}">
+        <path d="M260 302v30h11"/>
+      </g>
+
+      <!-- mouth (Love) -->
+      <g opacity="${a("love",0.8,1)}">
+        <ellipse cx="260" cy="378" rx="13" ry="6.5" fill="${feat("love", "#8B4A55")}"/>
+        <path d="M244 378h32" fill="none" stroke="${ink}" stroke-width="1.8" stroke-linecap="round" opacity=".5"/>
+      </g>
+    </g>
+  `;
+
+  // key column: 1–9 in list order; score (if any) sits after the label
+  const key = [
+    ["Hair","growth"],["Forehead","mind"],["Brows","career"],
+    ["Eyes","fun"],["L cheek","friends"],["R cheek","family"],
+    ["Nose","money"],["Mouth","love"],["Face","health"]
+  ];
+  key.forEach((row,i)=>{
+    const y = 135 + i*30;
+    const id = row[1];
+    const area = byId[id];
+    const n = i + 1;
+    const r = 12;
+    if(previous && previous[id]){
+      g += `<circle class="prev-ring" cx="28" cy="${y}" r="${r+4}"/>`;
     }
-    const mid = a0 + STEP/2; const [lx,ly] = pt(R+34, mid);
-    const c = Math.cos(rad(mid)); const anchor = Math.abs(c)<.25 ? "middle" : (c>0 ? "start" : "end");
-    g += `<text class="lbl" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="middle">${a.short}${s[a.id] ? ` <tspan class="lblscore">${s[a.id]}</tspan>` : ""}</text>`;
+    g += `<circle class="badge-bg" cx="28" cy="${y}" r="${r}" fill="${area.color}" opacity="${sc(id)?1:0.55}"/>`;
+    g += `<text class="badge" x="28" y="${y+1}" text-anchor="middle" dominant-baseline="middle">${n}</text>`;
+    const scoreBit = s[id] ? ` <tspan class="lbl-mute">· ${s[id]}</tspan>` : "";
+    g += `<text class="lbl" x="48" y="${y}" dominant-baseline="middle">${row[0]} <tspan class="lbl-mute">· ${area.short}</tspan>${scoreBit}</text>`;
   });
+
   if(hub){
     const vals = Object.values(s).filter(Boolean);
     const avg = vals.length ? (vals.reduce((x,y)=>x+y,0)/vals.length).toFixed(1) : "–";
-    g += `<circle class="hub" cx="${CX}" cy="${CY}" r="${R0}"/><text class="hubtxt" x="${CX}" y="${CY+4}" text-anchor="middle">${avg}</text><text class="hubsub" x="${CX}" y="${CY+20}" text-anchor="middle">average</text>`;
+    g += `<text class="avg" x="48" y="430" text-anchor="start">${avg}</text>`;
+    g += `<text class="avgsub" x="48" y="450" text-anchor="start">average</text>`;
   }
-  el.innerHTML = `<svg viewBox="0 0 520 520" role="img" aria-label="Life wheel">${g}</svg>`;
+
+  // face (scores are in the key, not floating on features)
+  g += `<g transform="translate(155 0) translate(260 310) scale(1.28) translate(-260 -310)">`;
+
   if(interactive){
-    el.querySelectorAll(".hit").forEach(h=>h.addEventListener("click",()=>setScore(h.dataset.a, +h.dataset.k)));
+    const hits = {
+      growth:  "M158 120h204v100H158z",
+      mind:    "M192 226h136v50H192z",
+      career:  "M190 265h55v32h-55zM275 265h55v32h-55z",
+      fun:     "M198 300h55v40h-55zM267 300h55v40h-55z",
+      friends: "M178 325h48v45h-48z",
+      family:  "M294 325h48v45h-48z",
+      money:   "M245 300h40v50h-40z",
+      love:    "M230 360h60v40h-60z",
+      health:  "M186 270h148v130H186z"
+    };
+    ["health","growth","mind","career","friends","family","fun","money","love"].forEach(id=>{
+      const area = byId[id], f = FEATURE[id];
+      g += `<path class="hit" data-a="${id}" d="${hits[id]}"><title>${f.label}: ${area.name}${s[id]?` — ${s[id]}`:""}. Click to rate.</title></path>`;
+    });
+  }
+
+  g += `</g>`;
+
+  el.innerHTML = `<svg viewBox="0 90 560 420" role="img" aria-label="Life check-in face map">${g}</svg>`;
+
+  if(interactive){
+    el.querySelectorAll(".hit").forEach(h=>h.addEventListener("click",()=>{
+      const id = h.dataset.a;
+      const cur = scores[id] || 0;
+      setScore(id, cur >= 10 ? 1 : cur + 1);
+    }));
   }
 }
 
@@ -442,7 +637,7 @@ function renderPlan(){
       </div></div></article>`;
   }).join("");
   const top = [...AREAS].sort((a,b)=>scores[b.id]-scores[a.id])[0];
-  html += `<div class="working"><h3>What's already working: ${top.name.toLowerCase()} (${scores[top.id]}/10)</h3>
+  html += `<div class="working"><h3>What's already in bloom: ${top.name.toLowerCase()} (${scores[top.id]}/10)</h3>
     <p>What makes this part of your life feel good? The habits, people or choices behind it might be the same ones that can lift the areas you chose.</p></div>`;
   body.innerHTML = html;
   saved = false; document.getElementById("save").disabled = false;
